@@ -14,7 +14,6 @@ int main(void)
         sum += num;
     }
     
-    
     printf("%d에서 %d까지의 합 = %d\n", x, y, sum);
     
     return 0;
