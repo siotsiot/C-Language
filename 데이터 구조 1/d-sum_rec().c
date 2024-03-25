@@ -16,11 +16,12 @@ int main(void)
 
 int sum_rec(int n)
 {
+    int sum = 0;
+
     if (n < 10)
         return n;
 
-    int lastDigit = n % 10;
-    int remainingDigits = n / 10;
+    sum = n % 10;
 
-    return lastDigit + sum_rec(remainingDigits);
+    return sum + sum_rec(n / 10);
 }
