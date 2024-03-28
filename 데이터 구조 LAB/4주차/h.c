@@ -2,8 +2,8 @@
 #define MAX_SIZE 100
 
 typedef struct {
+	int coef;
 	int expo;
-	float coef;
 } element;
 
 typedef struct {
@@ -11,71 +11,103 @@ typedef struct {
 	int nums; // 다항식에 포함된 항의 개수
 } polynominal;
 
-int main(void)
+polynominal poly_add(polynominal p, polynominal q) // 2개의 다항식을 계산하는 함수
 {
-	polynominal p = { { { 5, 3 }, { 2, 2 }, { 3, 1 }, { 1, 0 } }, 4 };
-	polynominal q = { { { 10, 5 }, { 3, 3 }, { 5, 2 } }, 3 };
+	polynominal r = { 0 };
+	int ip = 0, iq = 0, ir = 0; // 다항식 p, q, r의 배열의 인덱스
+	int pn = p.nums; // 다항식 p의 항의 개수
+	int qn = q.nums; // 다항식 q의 항의 개수
 
-	poly_add(p, q);
-
-
-
-	return 0;
-}
-
-polynominal poly_add(polynominal p, polynominal q)
-{
-	polynominal r;
-	int ip = 0, iq = 0, ir = 0; // 방정식 p, q, r의 배열 p의 인덱스
-	int pn = p.nums; // p방정식의 항의 개수
-	int qn = q.nums; // q방정식의 항의 개수
-	int nums = 0;
-
-	while (ip < pn && iq < qn)
+	while (ip < pn && iq < qn) // 다항식 p와 q의 배열 인덱스가 다항식 p, q의 항의 개수보다 작을 때
 	{
-		if (p.terms[ip].expo = q.terms[ip].expo) // p항의 ip번째 
+		if (p.terms[ip].expo == q.terms[iq].expo) // 차수가 같을 때
 		{
-			r.terms[ir].coef = p.terms[ip].coef + q.terms[iq].coef;
-			r.terms[ir].expo = p.terms[ip].expo + q.terms[iq].expo;
-			ir++; ip++; iq++;
+			r.terms[ir].coef = p.terms[ip].coef + q.terms[iq].coef; // ip번째의 계수와 iq번째의 계수를 더하기
+			r.terms[ir].expo = p.terms[ip].expo; // ir에 차수 저장
+			ir++;
+			ip++;
+			iq++;
+			r.nums++; // 다항식 r의 항의 개수 증가
 		}
 
-		else if (p.terms[ip].expo > q.terms[ip].expo)
+		else if (p.terms[ip].expo > q.terms[iq].expo) // 다항식 p의 차수가 더 클 때
 		{
 			r.terms[ir].coef = p.terms[ip].coef;
 			r.terms[ir].expo = p.terms[ip].expo;
-			ir++; ip++;
+			ir++;
+			ip++;
+			r.nums++;
 		}
 
-		else
+		else // 다항식 q의 차수가 더 클 때
 		{
 			r.terms[ir].coef = q.terms[iq].coef;
 			r.terms[ir].expo = q.terms[iq].expo;
-			ir++; iq++;
+			ir++;
+			iq++;
+			r.nums++;
 		}
-		nums++;
 	}
 
-	if (ip < pn)
+	if (ip < pn) // 다항식 p의 항이 남아있는 경우
 	{
 		for (int i = ip; i < pn; i++)
 		{
 			r.terms[ir].coef = p.terms[ip].coef;
 			r.terms[ir].expo = p.terms[ip].expo;
-			ir++; nums++;
+			ir++;
+			ip++;
+			r.nums++;
 		}
 	}
 
-	else if (iq < qn)
+	else if (iq < qn) // q의 항이 남아있는 경우
 	{
 		for (int i = iq; i < qn; i++)
 		{
 			r.terms[ir].coef = q.terms[iq].coef;
 			r.terms[ir].expo = q.terms[iq].expo;
-			ir++; nums++;
+			ir++;
+			iq++;
+			r.nums++;
 		}
 	}
-	r.nums = nums;
 
 	return r;
+}
+
+void print(polynominal r) // 계산된 다항식 r을 출력하는 함수
+{
+	for (int i = 0; i < r.nums; i++)
+	{
+		printf("%d", r.terms[i].coef);
+		if (r.terms[i].expo != 0)
+		{
+			printf("x");
+			if (r.terms[i].expo != 1)
+			{
+				printf("^");
+				printf("%d", r.terms[i].expo);
+			}
+		}
+		
+		if (i < r.nums - 1)
+			printf("+");
+	}
+}
+
+int main(void)
+{
+	polynominal p = { { { 5, 3 }, { 2, 2 }, { 3, 1 }, { 1, 0 } }, 4 };
+	polynominal q = { { { 10, 5 }, { 3, 3 }, { 5, 2 } }, 3 };
+	polynominal r;
+
+	printf("방정식 p의 항의 개수 : %d\n", p.nums);
+	printf("방정식 q의 항의 개수 : %d\n", q.nums);
+
+	r = poly_add(p, q);
+	print(r);
+	printf("\n");
+
+	return 0;
 }
