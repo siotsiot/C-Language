@@ -1,6 +1,4 @@
 #include <stdio.h>
-sparse_matrix add_sparseMatrix(sparse_matrix, sparse_matrix); // 함수 원형 선언
-void print(sparse_matrix, sparse_matrix, sparse_matrix);
 #define MAX_SIZE 100 // 희소 행렬의 최대 요소 개수
 
 // 희소 행렬의 요소 구조체 정의
@@ -61,7 +59,7 @@ sparse_matrix add_sparseMatrix(sparse_matrix p, sparse_matrix q)
         r.data[r.num].col = p.data[ip].col;
         r.data[r.num].val = p.data[ip].val;
         r.num++;
-        iq++;
+        ip++;
     }
     while (iq < q.num)
     {
@@ -98,7 +96,7 @@ void print(sparse_matrix p, sparse_matrix q, sparse_matrix r) // 행렬 p, q, r�
 int main()
 {
     // 희소 행렬 p, q 초기화
-    sparse_matrix p = { { {0, 2, 1}, {1, 5, 2}, {3, 1, 3}, {3, 9, 4}, {4, 0, 5}, {4, 4, 6}, {4, 9, 7} }, 7 };
+    sparse_matrix p = { { {0, 2, 3}, {2, 5, 6}, {3, 6, 3}, {3, 9, 4}, {4, 5, 5}, {4, 7, 9} }, 6 };
     sparse_matrix q = { { {0, 0, 5}, {0, 4, 6}, {0, 9, 7}, {1, 1, 3}, {1, 5, 1}, {3, 5, 2}, {4, 4, 1}, {4, 9, 1} }, 8 };
 
     // 희소 행렬 p, q의 덧셈
