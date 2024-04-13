@@ -67,10 +67,7 @@ int paren_test(char exp[])
         {
             case '(':
                 if (!is_full(s))
-                {
                     push(&s, ch);
-                    //return 0;
-                }
                 break;
 
             case ')':
