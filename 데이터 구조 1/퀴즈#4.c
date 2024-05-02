@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 100
@@ -92,7 +93,9 @@ void fibonacci_numbers(int n)
 
 int main(void)
 {
-    int n = 21;
+    int n;
+    printf("n을 입력하세요: ");
+    scanf("%d", &n);
     init(&stk1);
     init(&stk2);
     
