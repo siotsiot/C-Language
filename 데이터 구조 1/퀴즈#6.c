@@ -45,7 +45,7 @@ int main(void)
 	node* list = cons_list();
 	print_list(list);
 
-	struct node* temp;
+	node* temp;
 	while (list != NULL)
 	{
 		temp = list;
