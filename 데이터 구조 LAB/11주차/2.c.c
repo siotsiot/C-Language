@@ -6,14 +6,6 @@ typedef struct nodetype {
     struct nodetype* link;
 } nodetype;
 
-nodetype* insert_first(nodetype* list, int val)
-{
-    nodetype* p = (nodetype*)malloc(sizeof(nodetype));
-    p->val = val;
-    p->link = list;
-    return p;
-}
-
 nodetype* insert_last(nodetype* list, int val)
 {
     nodetype* p = (nodetype*)malloc(sizeof(nodetype));
@@ -41,19 +33,6 @@ nodetype* cons_list(nodetype* list)
     return list;
 }
 
-void print_list(nodetype* list)
-{
-    nodetype* p = list;
-    
-    while (p != NULL)
-    {
-        printf("%d", p->val);
-        if (p->link != NULL)
-            printf(">");
-        p = p->link;
-    }
-    printf("\n");
-}
 nodetype* delete_first(nodetype* list)
 {
     nodetype* p;
@@ -88,6 +67,20 @@ nodetype* delete_last(nodetype* list)
         temp->link = NULL;
         return list;
     }
+}
+
+void print_list(nodetype* list)
+{
+    nodetype* p = list;
+
+    while (p != NULL)
+    {
+        printf("%d", p->val);
+        if (p->link != NULL)
+            printf(">");
+        p = p->link;
+    }
+    printf("\n");
 }
 
 int main(void)
