@@ -106,7 +106,7 @@ void print_poly(nodetype* list)
     {
         if (p != list && p->term.coef > 0) // 현재 노드의 값과 다르고, 계수가 0보다 크면
             printf(" + "); // '+'기호 출력
-        else if (p->term.coef < 0) // 계수가 음수면
+        else if (p != list && p->term.coef < 0) // 계수가 음수면
             printf(" - "); // '-'기호 출력
 
         if (p->term.coef != 0) // 계수가 0이 아니면
