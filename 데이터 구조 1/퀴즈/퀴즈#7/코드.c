@@ -3,8 +3,8 @@
 
 typedef int element;
 typedef struct node {
-	element val;
-	struct node* link;
+    element val;
+    struct node* link;
 } nodetype;
 
 nodetype* insert_last(nodetype* list, int val)
@@ -27,10 +27,10 @@ nodetype* insert_last(nodetype* list, int val)
 
 nodetype* cons_list1()
 {
-	nodetype* list1 = NULL;
+    nodetype* list1 = NULL;
     int num = 3;
 
-	for (int i = 1; i <= 10; i++)
+    for (int i = 1; i <= 10; i++)
         list1 = insert_last(list1, num * i);
 
     return list1;
@@ -52,12 +52,13 @@ nodetype* merge(nodetype* list1, nodetype* list2)
     nodetype* head = NULL;
     nodetype* tail = NULL;
 
-    if (list1->val <= list2->val) // list1의 값이 작을 경우
+    // 헤드 포인트 결정
+    if (list1->val <= list2->val)
     {
         head = tail = list1;
         list1 = list1->link;
     }
-    else // list2의 값이 작을 경우
+    else
     {
         head = tail = list2;
         list2 = list2->link;
@@ -65,13 +66,13 @@ nodetype* merge(nodetype* list1, nodetype* list2)
 
     while (list1 != NULL && list2 != NULL)
     {
-        if (list1->val <= list2->val)
+        if (list1->val <= list2->val) // list1의 값이 작을 경우. 값이 같으면 list1의 값으로 설정.
         {
             tail->link = list1;
             tail = list1;
             list1 = list1->link;
         }
-        else
+        else  // list2의 값이 작을 경우
         {
             tail->link = list2;
             tail = list2;
@@ -101,9 +102,9 @@ int main(void)
 {
     nodetype* list1 = cons_list1();
     nodetype* list2 = cons_list2();
-    
+
     nodetype* merged_list = merge(list1, list2);
     print_list(merged_list);
 
-	return 0;
+    return 0;
 }
