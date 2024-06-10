@@ -55,7 +55,7 @@ TreeNode* inorder_successor(TreeNode *T)
 	return p;
 }
 
-TreeNode* thread_inorder(TreeNode* T)
+void thread_inorder(TreeNode* T)
 {
 	if (T == NULL) return T;
 	TreeNode* p = T;
