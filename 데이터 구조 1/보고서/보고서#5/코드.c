@@ -138,7 +138,7 @@ double compute(double x, char op, double y)
 
 typedef struct Stack
 {
-    TreeNode* nodes[100];
+    TreeNode* nodes[MAX_SIZE];
     int top;
 } Stack;
 
@@ -154,7 +154,7 @@ int IsEmpty(Stack* stack)
 
 int IsFull(Stack* stack)
 {
-    return stack->top == 99;
+    return stack->top == MAX_SIZE - 1;
 }
 
 void Push(Stack* stack, TreeNode* node)
@@ -191,7 +191,7 @@ void get_exp(char* exp)
     fgets(exp, MAX_SIZE, stdin);
 }
 
-void postfix(char exp[], char pexp[])
+void postfix(char exp[], char post[])
 {
     stack_Type s;
     init(&s);
@@ -205,22 +205,20 @@ void postfix(char exp[], char pexp[])
         {
             while (isdigit(token))
             {
-                pexp[j++] = token;
+                post[j++] = token;
                 token = get_token(exp, &i);
             }
-            pexp[j++] = ' ';
+            post[j++] = ' ';
             i--;
         }
         else if (is_operator(token))
         {
             while (!is_empty(&s) && PIS(peek(&s)) >= PIE(token))
-                pexp[j++] = pop(&s);
+                post[j++] = pop(&s);
             push(&s, token);
         }
         else if (token == '(' || token == '{' || token == '[')
-        {
             push(&s, token);
-        }
         else if (token == ')' || token == '}' || token == ']')
         {
             switch (token)
@@ -229,7 +227,7 @@ void postfix(char exp[], char pexp[])
                     top_op = pop(&s);
                     while (!is_empty(&s) && top_op != '(')
                     {
-                        pexp[j++] = top_op;
+                        post[j++] = top_op;
                         top_op = pop(&s);
                     }
                     break;
@@ -237,7 +235,7 @@ void postfix(char exp[], char pexp[])
                     top_op = pop(&s);
                     while (!is_empty(&s) && top_op != '{')
                     {
-                        pexp[j++] = top_op;
+                        post[j++] = top_op;
                         top_op = pop(&s);
                     }
                     break;
@@ -245,7 +243,7 @@ void postfix(char exp[], char pexp[])
                     top_op = pop(&s);
                     while (!is_empty(&s) && top_op != '[')
                     {
-                        pexp[j++] = top_op;
+                        post[j++] = top_op;
                         top_op = pop(&s);
                     }
                     break;
@@ -254,31 +252,31 @@ void postfix(char exp[], char pexp[])
     }
 
     while (!is_empty(&s))
-        pexp[j++] = pop(&s);
-    pexp[j] = '\0';
+        post[j++] = pop(&s);
+    post[j] = '\0';
 }
 
-TreeNode* const_exptree(char postfix[])
+TreeNode* const_exptree(char post[])
 {
     Stack stack;
     InitStack(&stack);
-    int length = strlen(postfix);
+    int length = strlen(post);
     for (int i = 0; i < length; i++)
     {
-        if (isdigit(postfix[i]))
+        if (isdigit(post[i]))
         {
             double num = 0;
-            while (i < length && isdigit(postfix[i]))
+            while (i < length && isdigit(post[i]))
             {
-                num = num * 10 + (postfix[i] - '0');
+                num = num * 10 + (post[i] - '0');
                 i++;
             }
             i--;
             Push(&stack, newNode(num));
         }
-        else if (is_operator(postfix[i]))
+        else if (is_operator(post[i]))
         {
-            TreeNode* node = newNode(postfix[i]);
+            TreeNode* node = newNode(post[i]);
             node->right = Pop(&stack);
             node->left = Pop(&stack);
             Push(&stack, node);
