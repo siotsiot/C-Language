@@ -217,15 +217,38 @@ void postfix(char exp[], char pexp[])
                 pexp[j++] = pop(&s);
             push(&s, token);
         }
-        else if (token == '(')
-            push(&s, token);
-        else if (token == ')')
+        else if (token == '(' || token == '{' || token == '[')
         {
-            top_op = pop(&s);
-            while (!is_empty(&s) && top_op != '(')
+            push(&s, token);
+        }
+        else if (token == ')' || token == '}' || token == ']')
+        {
+            switch (token)
             {
-                pexp[j++] = top_op;
-                top_op = pop(&s);
+                case ')':
+                    top_op = pop(&s);
+                    while (!is_empty(&s) && top_op != '(')
+                    {
+                        pexp[j++] = top_op;
+                        top_op = pop(&s);
+                    }
+                    break;
+                case '}':
+                    top_op = pop(&s);
+                    while (!is_empty(&s) && top_op != '{')
+                    {
+                        pexp[j++] = top_op;
+                        top_op = pop(&s);
+                    }
+                    break;
+                case ']':
+                    top_op = pop(&s);
+                    while (!is_empty(&s) && top_op != '[')
+                    {
+                        pexp[j++] = top_op;
+                        top_op = pop(&s);
+                    }
+                    break;
             }
         }
     }
@@ -276,16 +299,6 @@ double eval(TreeNode* root)
     return compute(left_val, root->data, right_val);
 }
 
-void inorder(TreeNode* root)
-{
-    if (root != NULL)
-    {
-        inorder(root->left);
-        printf("%lf ", root->data);
-        inorder(root->right);
-    }
-}
-
 int main(void)
 {
     char exp[MAX_SIZE];
@@ -294,10 +307,11 @@ int main(void)
     double result;
 
     get_exp(exp);
+    exp[strcspn(exp, "\n")] = '\0';
     postfix(exp, post);
     T = const_exptree(post);
     result = eval(T);
-    printf("결과: %lf\n", result);
+    printf("%s = %lf\n", exp, result);
 
     return 0;
 }
